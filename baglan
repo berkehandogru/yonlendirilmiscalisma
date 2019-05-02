@@ -1,0 +1,7 @@
+<?php
+$baglanti = @mysqli_connect('localhost', 'root', '123456789','kullanici')or die("Bağlantı Kurulamadı");
+if(!$baglanti){
+	die("Baglantı başarısız : " . mysqli_connect_error());
+}
+
+?>
