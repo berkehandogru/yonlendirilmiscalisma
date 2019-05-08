@@ -18,7 +18,7 @@ echo "<br> <a href=\"adminlogin.php\">Admin Girişi Yap</a>";
  
 
 }else{
-echo "<a href=\"logout.php\">Çıkış Yap</a>";
+echo "<a href=\"adminlogout.php\">Çıkış Yap</a>";
 echo "<!DOCTYPE html>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
