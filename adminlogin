@@ -1,0 +1,63 @@
+<?php
+include('baglan.php')
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iofrm</title>
+    <link rel="stylesheet" type="text/css" href="css/trbootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/trfontawesome-all.min.css">
+    <link rel="stylesheet" type="text/css" href="css/triofrm-style.css">
+    <link rel="stylesheet" type="text/css" href="css/triofrm-theme1.css">
+</head>
+<body>
+    <div class="form-body" class="container-fluid">
+        <div class="row">
+            <div class="img-holder">
+                <div class="bg"></div>
+                <div class="info-holder">
+
+                </div>
+            </div>
+            <div class="form-holder">
+                <div class="form-content">
+                    <div class="form-items">
+                        <h3>ADMİN GİRİSİ</h3>
+                        
+                        <form action="" method="POST">
+                            <input type="text" name="email" placeholder="Enter your email address...">
+                            <input type="password" name="password" placeholder="Password">
+                            <div class="form-button">
+                                <button id="submit" type="submit" name="login" class="ibtn">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<?php
+session_start();
+
+ob_start();
+if($_POST){
+	$sql = "select * from admin where email='$_POST[email]' and password='$_POST[password]'";
+	$sorgu = mysqli_query($baglanti, $sql);
+	if (mysqli_num_rows($sorgu) >= 1) {
+		$_SESSION["admin"] = "true";
+
+		$_SESSION["email"] = $email;
+
+		$_SESSION["password"] = $password;	
+		header("Location:adminindex.php");
+	}
+	else{
+		echo "kullanıcı bilgileri eşleşmedi";
+	}
+}
+
+?>
