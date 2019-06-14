@@ -1,0 +1,184 @@
+<?php
+
+ 
+
+include("baglan.php");
+
+session_start();
+
+ 
+
+//eğer login session kaydı yapılmadan yani giriş yapmadan admin.php sayfamıza erişmek isterlerse buna engel oluyoruz.
+
+ 
+
+if(!isset($_SESSION["login"])){
+
+ 
+
+echo "Bu sayfayı görüntüleme yetkiniz yoktur.";
+echo "<br> <a href=\"login1.php\">Giriş Yap</a>";
+echo "<br> <a href=\"register1.php\">Hesap oluştur</a>";
+
+ 
+
+}else{
+
+ 
+
+echo "<a href=\"logout.php\">Çıkış Yap</a>";
+echo"<!doctype html>
+<html class='no-js' lang='zxx'>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='x-ua-compatible' content='ie=edge'>
+    <title>Berkehan Dogru</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+    <!-- Favicons -->
+    <link rel='shortcut icon' href='img/favicon.ico'>
+    <!-- Fontawesome css -->
+    <link rel='stylesheet' href='css/font-awesome.min.css'>
+    <!-- Ionicons css -->
+    <link rel='stylesheet' href='css/ionicons.min.css'>
+    <!-- linearicons css -->
+    <link rel='stylesheet' href='css/linearicons.css'>
+    <!-- Nice select css -->
+    <link rel='stylesheet' href='css/nice-select.css'>
+    <!-- Jquery fancybox css -->
+    <link rel='stylesheet' href='css/jquery.fancybox.css'>
+    <!-- Jquery ui price slider css -->
+    <link rel='stylesheet' href='css/jquery-ui.min.css'>
+    <!-- Meanmenu css -->
+    <link rel='stylesheet' href='css/meanmenu.min.css'>
+    <!-- Nivo slider css -->
+    <link rel='stylesheet' href='css/nivo-slider.css'>
+    <!-- Owl carousel css -->
+    <link rel='stylesheet' href='css/owl.carousel.min.css'>
+    <!-- Bootstrap css -->
+    <link rel='stylesheet' href='css/bootstrap.min.css'>
+    <!-- Custom css -->
+    <link rel='stylesheet' href='css/default.css'>
+    <!-- Main css -->
+    <link rel='stylesheet' href='style.css'>
+    <!-- Responsive css -->
+    <link rel='stylesheet' href='css/responsive.css'>
+
+    <!-- Modernizer js -->
+    <script src='js/vendor/modernizr-3.5.0.min.js'></script>
+</head>
+
+<body>
+    <!--[if lte IE 9]>
+        <p class='browserupgrade'>You are using an <strong>outdated</strong> browser. Please <a href='https://browsehappy.com/'>upgrade your browser</a> to improve your experience and security.</p>
+    <![endif]-->
+
+    <!-- Main Wrapper Start Here -->
+		
+       <!-- Banner Popup Start -->
+
+        <!-- Banner Popup End -->
+       <!-- Newsletter Popup Start -->
+        <!-- Newsletter Popup End -->
+
+        <!-- Main Header Area Start Here -->
+        <header>
+		
+		
+            <!-- Header Top Start Here -->
+			
+            <!-- Header Top End Here -->
+            <!-- Header Middle Start Here -->
+            
+            <!-- Header Middle End Here -->
+            <!-- Header Bottom Start Here -->
+            
+            <!-- Header Bottom End Here -->
+            <!-- Mobile Vertical Menu Start Here -->
+            
+            <!-- Mobile Vertical Menu Start End -->
+        </header>
+		
+		<ul class='header-bottom-list d-flex'>
+                                    <li><a href='index-3.php'>Anasayfa<i class='fa fa-angle-down'></i></a>
+                                        <!-- Home Version Dropdown Start -->
+                                        <!-- Home Version Dropdown End -->
+                                    </li>
+                                    <li><a href='cart.php'>Alisveris<i class='fa fa-angle-down'></i></a>
+                                        <!-- Home Version Dropdown Start -->
+                                        <!-- Home Version Dropdown End -->
+                                    </li>
+                                    <li><a href='contact.php'>Bize Ulasın<i class='fa fa-angle-down'></i></a>
+                                        <!-- Home Version Dropdown Start -->
+                                        <!-- Home Version Dropdown End -->
+                                    </li>
+                                </ul>
+        <!-- Main Header Area End Here -->
+        <!-- Categorie Menu & Slider Area Start Here -->
+        <div class='main-page-banner pb-50 off-white-bg home-3'>
+            
+            <!-- Container End -->
+            <!-- Slider Area Start Here -->
+            <div class='slider_box'>
+                <div class='slider-wrapper theme-default'>
+                    <!-- Slider Background  Image Start-->
+                    <div id='slider' class='nivoSlider'>
+                        
+                    </div>
+                    <!-- Slider Background  Image Start-->
+                </div>
+            </div>
+            <!-- Slider Area End Here -->            
+        </div>
+        <!-- Categorie Menu & Slider Area End Here -->
+        <!-- Brand Banner Area Start Here -->
+        <div class='image-banner pb-30 off-white-bg'>
+            <div class='container'>
+                <div class='col-img'>
+                    
+                </div>
+            </div>
+            <!-- Container End -->
+        </div>
+		
+		<b><center><h1> VEGANLIK NEDİR? </b></center> </h1>
+		<div> <h4> <b> Vegan ve vejetaryen beslenme, toplayıcı insanların dönemi kadar eski olsa da avcılıkla ve ateşin bulunmasıyla birlikte
+				yenmeye başlanan hayvanlar yüzünden unutulmuş durumdaydı. Ta ki günümüze; et endüstrisinin yarattığı korkunç görüntülere
+				, çalışma şekillerine, hareket edemeyip antibiyotiklerle şişirilen hayvanların ayyuka çıkmasına; farklı diyetlerin sonuçlarının
+				laboratuvar ortamında klinik olarak test edilebilmesine ve kıyaslamalar yapılmasına ve yeme alışkanlıklarının hastalıkların
+				kaynağı olarak gösterilmesine kadar.
+
+				Tarihi bu kadar eski olsa da “vegan” kelimesi ve tanımı ilk kez 1940’lı yıllarda bir makalede kullanılmıştır ve hem bu beslenme
+				şekli ile hayatını sürdüren kişiye hem de bu beslenmeye verilen addır.
+
+				Özetle, veganlık tüm hayvansal gıdalardan arınmış beslenme türüdür ve hatta bir yaşam biçimidir.
+				Öyle ki tereyağı, yumurta, kırmızı et, tavuk, balık, süt, süt ürünleri (peynir, yoğurt, krema vb.), kemik, sakatat hatta bal,
+				jelatin gibi ürünlerin tamamen hayatınızdan ve beslenmenizden çıkması gerekiyor. Kürk ve deri malzemeleri (evet ayakkabılar ve çantalar da!)
+				söylememe gerek yok sanıyorum. Veganların yanından bile geçemezler. Kısacası etrafınıza bir bakın, hayvanlar sayesinde üretilmiş ne varsa,
+				veganlar hepsini reddeder.
+
+				O yüzden demem o ki veganlara iyi davranın çünkü onlar bilerek ve isteyerek, bu acımasız endüstriyel
+				hayatın sunduğu, ambalajladığı, reklamlarla ağız sulandırıp satış için pompaladığı ve market reyonlarını dolduran tüm o
+				hayvansal içerikli yiyeceklerden bilerek ve isteyerek mahrum kalıyor ve hep onlara muadiller bulmaya çabalayarak hayatlarını
+				sürdürüyorlar. Empatisi zor. Hele ki Türkiye’de, Türk mutfağında uygulanabilmesi neredeyse imkansıza yakın. </div> </h4> </b>
+        <!-- Brand Banner Area End Here -->
+        <!-- Trending Products End Here -->
+        <!-- Trending Products End Here -->
+        <!-- Trending Products End Here -->
+        
+    <!-- Main Wrapper End Here -->
+
+    <!-- jquery 3.2.1 -->
+
+</body>
+
+</html>";
+
+
+ 
+
+}
+
+ 
+
+?>
