@@ -1,0 +1,9 @@
+<?php
+
+
+echo "Siparişiniz başarıyla tamamlandı.";
+
+ 
+
+header("Refresh: 3; url=index-3.php");
+?>
