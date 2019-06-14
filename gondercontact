@@ -1,0 +1,9 @@
+<?php
+
+
+echo "Mailiniz basariyla iletildi.";
+
+ 
+
+header("Refresh: 3; url=contact.php");
+?>
