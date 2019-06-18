@@ -54,7 +54,10 @@ echo "<!DOCTYPE html>
                     </li>
                     <li>
                         <a href='urunekle.php'><i class='fa fa-desktop '></i>Urun Ekle <span class='fa arrow'></span></a>
-                    </li>                
+                    </li>  
+                    <li>
+                        <a href='adminlistele.php'><i class='fa fa-desktop '></i>Urun Listele <span class='fa arrow'></span></a>
+                    </li>   					
                 </ul>
 
             </div>
@@ -72,10 +75,11 @@ echo "<!DOCTYPE html>
                 </div>
 				
 				                        <form action='' method='POST'>
-                            <input type='text' name='urunAdi' placeholder='Urun adini giriniz.'><br>
+                            <input type='text' name='urunAdi' placeholder='Urun adini giriniz.'><br>					
                             <input type='text' name='ureticiAdi' placeholder='Uretici adini giriniz.'><br>
 							<input type='text' name='urunFiyat' placeholder='Urun fiyati'><br>
-                            <input type='number' name='stokSayisi' placeholder='Stok sayisi'>
+                            <input type='number' name='stokSayisi' placeholder='Stok sayisi'><br>
+							<input type='text' name='kategori_adi' placeholder='Kategori adini giriniz.'><br>
                             <div class='form-button'>
                                 <button id='submit' type='submit' name='ekle' class='ibtn'>Urun Ekle</button>
                             </div>
@@ -135,7 +139,8 @@ if($_POST){
 	$ureticiAdi = $_POST['ureticiAdi'];
 	$urunFiyat = $_POST['urunFiyat'];
 	$stokSayisi = $_POST['stokSayisi'];
-	$ekle = "INSERT INTO urunler (urunAdi, ureticiAdi, urunFiyat, stokSayisi) VALUES ('$urunAdi', '$ureticiAdi', '$urunFiyat','$stokSayisi')";
+	$kategori_adi = $_POST['kategori_adi'];
+	$ekle = "INSERT INTO urunler (urunAdi, ureticiAdi, urunFiyat, stokSayisi, kategori_adi) VALUES ('$urunAdi', '$ureticiAdi', '$urunFiyat','$stokSayisi', '$kategori_adi')";
 	$sorgulama = mysqli_query($baglanti, $ekle);
 	if ($ekle != TRUE){
 		echo "Kaydınız sağlanamadı";
@@ -145,4 +150,4 @@ if($_POST){
 	}
 }
 }
-?>				
+?>	
