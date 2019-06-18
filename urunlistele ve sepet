@@ -112,10 +112,20 @@
 
     <div class="container" style="width: 65%">
         <h2>Alisveris Sepeti</h2>
+		 <div class="mobile-menu d-block d-lg-none">
+                                <nav>
+                                    <ul>
+										<li><a href="cart.php">Tüm Ürünler</a></li>
+										<li><a href="gida.php">Gıda</a></li>
+										<li><a href="takviyeler.php">Besin Takviyeleri</a></li>
+                                        <li><a href="glutensiz.php">Glutensiz</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
         <?php
             $query = "select * from urunler order by urun_id asc";
             $result = mysqli_query($baglanti,$query);
-            if(mysqli_num_rows($result) > 0) {
+            if(mysqli_num_rows($result) >= 1) {
                 while ($row = mysqli_fetch_array($result)) {
                     ?>
                     <div class="col-md-3">
@@ -179,6 +189,9 @@
                     }
                 ?>
             </table>
+									<form action="siparis.php" method="POST">
+			<input type="submit" name="gonder" value="Gonder" align="right">
+			</form>
         </div>
 
     </div>
