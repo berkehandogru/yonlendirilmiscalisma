@@ -54,7 +54,10 @@ echo "<!DOCTYPE html>
                     </li>
                     <li>
                         <a href='urunekle.php'><i class='fa fa-desktop '></i>Urun Ekle <span class='fa arrow'></span></a>
-                    </li>                
+                    </li>
+                    <li>
+                        <a href='adminlistele.php'><i class='fa fa-desktop '></i>Urun Listele <span class='fa arrow'></span></a>
+                    </li>   					
                 </ul>
 
             </div>
