@@ -68,35 +68,47 @@ echo "<a href=\"logout.php\">Çıkış Yap</a>";
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper">
             <div id="page-inner">
-                <div class="row">
-                </div>
-				<?php
+				<table class="table">
+				  <thead>
+					<tr>
+					  <th scope="col">#Order ID</th>
+					  <th scope="col">Satın Alan</th>
+					  <th scope="col">Toplam Tutar</th>
+					  <th scope="col">Tarih</th>
+					  <th scope="col">Detay</th>
+					</tr>
+				  </thead>
+				  <tbody>
+				  <?php
+					$query = "SELECT *, c.ad, c.soyad, c.email, c.phone FROM orders as r LEFT JOIN kullanicilar as c ON c.kullanici_id = r.customer_id ORDER BY created DESC";
 
-				print_r($_SESSION['cart']);
+					if ($result = $baglanti->query($query)) {
 
+						/* fetch associative array */
+						while ($row = $result->fetch_assoc()) {
+							?>
+							<tr>
+							  <th scope="row"><?php echo $row["id"]; ?></th>
+							  <td><?php echo $row['ad'].' '.$row['soyad']; ?></td>
+							  <td><?php echo $row["grand_total"]; ?> TL</td>
+							  <td><?php echo $row["created"]; ?></td>
+							  <td><a href="adminurundetay.php?id=<?php echo $row["id"]; ?>">Tıklayın</a> </td>
+							</tr>
+							<?php
+						}
 
-				?>
-				
-				
+						/* free result set */
+						$result->free();
+					}
 
-                <!-- /. ROW  -->
-
-                <!-- /. ROW  -->
-
-                
-                    <!--/.Chat Panel End-->
-                </div>
-                <!-- /. ROW  -->
-
-
-
-                <!--/.Row-->
-                <hr />
-                <!--/.Row-->
-                <hr />
-
-                <!--/.ROW-->
-
+					/* close connection */
+					$baglanti->close();
+				  
+				  ?>
+					
+	
+				  </tbody>
+				</table>
             </div>
             <!-- /. PAGE INNER  -->
         </div>
