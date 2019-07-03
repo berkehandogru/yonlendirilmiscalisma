@@ -1,0 +1,12 @@
+<?php  
+$dbHost     = "localhost"; 
+$dbUsername = "root"; 
+$dbPassword = ""; 
+$dbName     = "okul"; 
+
+$db = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName); 
+$db->set_charset("utf8");
+ 
+if ($db->connect_error) { 
+    die("Bağlantı başarısız: " . $db->connect_error); 
+}
