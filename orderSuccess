@@ -1,0 +1,92 @@
+<?php 
+if(!isset($_REQUEST['id'])){ 
+    header("Location: sepetim.php"); 
+} 
+
+require_once 'dbConfig.php'; 
+ 
+// Veritabanından sipariş detaylarını alıyorum
+$result = $db->query("SELECT r.*, c.ad, c.soyad, c.email, c.phone FROM orders as r LEFT JOIN kullanicilar as c ON c.kullanici_id = r.customer_id WHERE r.id = ".$_REQUEST['id']); 
+ 
+if($result->num_rows > 0){ 
+    $orderInfo = $result->fetch_assoc(); 
+}else{ 
+    header("Location: sepetim.php"); 
+} 
+?>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<title></title>
+<meta charset="utf-8">
+
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+<!-- Custom style -->
+<link href="css/sepetim.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+	<h3><a href="index.php">ANASAYFA</a></h3>
+    <h1>Sipariş Durumu</h1>
+    <div class="col-12">
+        <?php if(!empty($orderInfo)){ ?>
+            <div class="col-md-12">
+                <div class="alert alert-success">Siparişiniz başarıyla verildi.</div>
+            </div>
+			
+            <!-- Order status & shipping info -->
+            <div class="row col-lg-12 ord-addr-info">
+                <div class="hdr">Order Info</div>
+                <p><b>Sipariş ID:</b> #<?php echo $orderInfo['id']; ?></p>
+                <p><b>Toplam:</b> <?php echo $orderInfo['grand_total'].' TL'; ?></p>
+                <p><b>Sipariş Tarihi:</b> <?php echo $orderInfo['created']; ?></p>
+                <p><b>Alıcı:</b> <?php echo $orderInfo['ad'].' '.$orderInfo['soyad']; ?></p>
+                <p><b>Email:</b> <?php echo $orderInfo['email']; ?></p>
+                <p><b>Telefon:</b> <?php echo $orderInfo['phone']; ?></p>
+            </div>
+			
+            <!-- Order items -->
+            <div class="row col-lg-12">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Ürün</th>
+                            <th>Fiyat</th>
+                            <th>Adet</th>
+                            <th>Toplam Tutar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                        // Sipariş te bulunan ürünlerin bilgisini çekiyorum.
+                        $result = $db->query("SELECT i.*, p.name, p.price FROM order_items as i LEFT JOIN products as p ON p.id = i.product_id WHERE i.order_id = ".$orderInfo['id']); 
+                        if($result->num_rows > 0){  
+                            while($item = $result->fetch_assoc()){ 
+                                $price = $item["price"]; 
+                                $quantity = $item["quantity"]; 
+                                $sub_total = ($price*$quantity); 
+                        ?>
+                        <tr>
+                            <td><?php echo $item["name"]; ?></td>
+                            <td><?php echo $price.' TL'; ?></td>
+                            <td><?php echo $quantity; ?></td>
+                            <td><?php echo $sub_total.' TL'; ?></td>
+                        </tr>
+                        <?php } 
+                        } ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php } else{ ?>
+        <div class="col-md-12">
+            <div class="alert alert-danger">Sipariş gönderiminiz başarısız oldu.</div>
+        </div>
+        <?php } ?>
+    </div>
+</div>
+</body>
+</html>
