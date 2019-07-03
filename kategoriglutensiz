@@ -1,208 +1,75 @@
-<?php
-    session_start();
-	include("baglan.php");
-    if (isset($_POST["add"])){
-        if (isset($_SESSION["cart"])){
-            $item_array_id = array_column($_SESSION["cart"],"urun_id");
-            if (!isset($_GET["urun_id"],$item_array_id)){
-                $count = count($_SESSION["cart"]);
-                $item_array = array(
-                    'urun_id' => $_GET["urun_id"],
-                    'urunAdi' => $_POST["urunAdi"],
-                    'urunFiyat' => $_POST["urunFiyat"],
-                    'item_quantity' => $_POST["quantity"],
-                );
-                $_SESSION["cart"][$count] = $item_array;
-                echo '<script>window.location="cart.php"</script>';
-            }else{
-                echo '<script>alert("Product is already Added to Cart")</script>';
-                echo '<script>window.location="cart.php"</script>';
-            }
-        }else{
-            $item_array = array(
-                'urun_id' => $_GET["urun_id"],
-                'urunAdi' => $_POST["urunAdi"],
-                'urunFiyat' => $_POST["urunFiyat"],
-                'item_quantity' => $_POST["quantity"],
-            );
-            $_SESSION["cart"][0] = $item_array;
-        }
-    }
-    if (isset($_GET["action"])){
-        if ($_GET["action"] == "delete"){
-            foreach ($_SESSION["cart"] as $keys => $value){
-                if ($value["urun_id"] == $_GET["urun_id"]){
-                    unset($_SESSION["cart"][$keys]);
-                    echo '<script>alert("Ürün sepetinizden çıkartılmıştır...!")</script>';
-                    echo '<script>window.location="cart.php"</script>';
-                }
-            }
-        }
-    }
+<?php 
+include_once 'cart.class.php'; 
+$cart = new Cart; 
+ 
+require_once 'dbConfig.php'; 
+
+if(!isset($_SESSION["login"])){
+	header("Location: login1.php"); 
+}
+else{
+//echo $_SESSION["kullanici_id"]; 
+//echo $_SESSION["ad"]; 
+//echo $_SESSION["soyad"]; 
+//echo $_SESSION["email"]; 
+}
 ?>
 
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="tr">
 <head>
-    <meta charset="UTF-8">
-	
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Alisveris Sepeti</title>
+<title></title>
+<meta charset="utf-8">
 
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <style>
-        @import url('https://fonts.googleapis.com/css?family=Titillium+Web');
-        *{
-            font-family: 'Titillium Web', sans-serif;
-        }
-        .product{
-            border: 1px solid #eaeaec;
-            margin: -1px 19px 3px -1px;
-            padding: 10px;
-            text-align: center;
-            background-color: #efefef;
-        }
-        table, th, tr{
-            text-align: center;
-        }
-        .title2{
-            text-align: center;
-            color: #66afe9;
-            background-color: #efefef;
-            padding: 2%;
-        }
-        h2{
-            text-align: center;
-            color: #66afe9;
-            background-color: #efefef;
-            padding: 2%;
-        }
-        table th{
-            background-color: #efefef;
-        }
-    </style>
+
+<!-- Custom style -->
+<link href="css/sepetim.css" rel="stylesheet">
+
+</head>
 </head>
 <body>
-            <div class="header-bottom  header-sticky">
-                <div class="container">
-                    <div class="row align-items-center">
-                      
-                        <div class="col-xl-9 col-lg-8 col-md-12 ">
-                            
-							
-                            <div class="mobile-menu d-block d-lg-none">
-                                <nav>
-                                    <ul>
-										<li><a href="index-3.php">Anasayfa</a></li>
-										<li><a href="cart.php">Alisveris</a></li>
-                                        <li><a href="contact.html">Bize Ulaşın</a></li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Row End -->
-                </div>
-                <!-- Container End -->
-            </div>
-
-    <div class="container" style="width: 65%">
-        <h2>Alisveris Sepeti</h2>
-		                            <div class="mobile-menu d-block d-lg-none">
-                                <nav>
-                                    <ul>
-										<li><a href="cart.php">Tüm Ürünler</a></li>
-										<li><a href="gida.php">Gıda</a></li>
-										<li><a href="takviyeler.php">Besin Takviyeleri</a></li>
-                                        <li><a href="glutensiz.php">Glutensiz</a></li>
-                                    </ul>
-                                </nav>
-                            </div>
-		
-        <?php
-            $query = "select * from urunler where kategori_adi = 'glutensiz' order by urun_id asc";
-            $result = mysqli_query($baglanti,$query);
-            if(mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_array($result)) {
-                    ?>
-                    <div class="col-md-3">
-
-                        <form method="post" action="cart.php?action=add&id=<?php echo $row["urun_id"]; ?>">
-
-                            <div class="product">
-
-                                <h5 class="text-info"><?php echo $row["urunAdi"]; ?></h5>
-                                <h5 class="text-danger"><?php echo $row["urunFiyat"]; ?></h5>
-                                <input type="text" name="quantity" class="form-control" value="1">
-                                <input type="hidden" name="urunAdi" value="<?php echo $row["urunAdi"]; ?>">
-                                <input type="hidden" name="urunFiyat" value="<?php echo $row["urunFiyat"]; ?>">
-                                <input type="submit" name="add" style="margin-top: 5px;" class="btn btn-success"
-                                       value="Sepete Ekle">
-                            </div>
-                        </form>
-                    </div>
-                    <?php
-                }
-            }
-        ?>
-
-        <div style="clear: both"></div>
-        <h3 class="title2">Alisveris Sepeti Detayı</h3>
-        <div class="table-responsive">
-            <table class="table table-bordered">
-            <tr>
-                <th width="30%">Urun Adi</th>
-                <th width="10%">Miktar</th>
-                <th width="13%">Fiyat Detay</th>
-                <th width="10%">Toplam Fiyat</th>
-                <th width="17%">Ürünü kaldır</th>
-            </tr>
-
-            <?php
-                if(!empty($_SESSION["cart"])){
-                    $total = 0;
-                    foreach ($_SESSION["cart"] as $key => $value) {
-                        ?>							
-                        <tr>
-                            <td><?php echo $value["urunAdi"]; ?></td>
-                            <td><?php echo $value["item_quantity"]; ?></td>
-                            <td> <?php echo $value["urunFiyat"]; ?></td>
-                            <td>
-                                 <?php echo number_format($value["item_quantity"] * $value["urunFiyat"], 2); ?></td>
-                            <td><a href="cart.php?action=delete&urun_id=<?php echo $value["urun_id"]; ?>"><span
-                                        class="text-danger">Ürün çıkart</span></a></td>
-
-                        </tr>
-                        <?php
-                        $total = $total + ($value["item_quantity"] * $value["urunFiyat"]);
-                    }
-                        ?>
-                        <tr>
-                            <td colspan="3" align="right">Total</td>
-                            <th align="right">₺ <?php echo number_format($total, 2); ?></th>
-							
-							
-                            <td></td>
-							
-													
-						
-						
-                        </tr>				
-                        <?php
-                    }
-                ?>
-            </table>
-						<form action="siparis.php" method="POST">
-			<input type="submit" name="gonder" value="Gonder" align="right">
-			</form>
-        </div>
-
+<div class="user-inform container" style="display: block;">
+<span style="float: left;">Hoşgeldiniz, <?php echo $_SESSION["ad"]." ".$_SESSION["soyad"]; ?></span>
+<span style="float: right;"><a href="logout.php">Çıkış</a></span>
+</div>
+<div class="d-title" style="clear:both;"><h4>Sepetim</h4></div>
+<div class="container">
+    <h1 style="float: left;">Tüm Ürünler</h1>
+	<h6><a href="sepetim.php">Tüm Ürünler</a></h6>
+	<h6><a href="gida.php">Gida</a></h6>
+	<h6><a href="glutensiz.php">Glutensiz</a></h6>
+	
+    <!-- Cart basket -->
+    <div class="cart-view">
+        <a href="viewCart.php" title="View Cart"><i class="icart"></i> (<?php echo ($cart->total_items() > 0)?$cart->total_items().' Ürün var':'Sepet Boş'; ?>)</a>
     </div>
-
-
+    
+    <!-- Product list -->
+    <div class="row col-lg-12" style="padding-top: 30px;">
+        <?php 
+        // Get products from database 
+        $result = $db->query("SELECT * FROM products where category = 'glutensiz' ORDER BY id DESC LIMIT 10"); 
+        if($result->num_rows > 0){  
+            while($row = $result->fetch_assoc()){ 
+        ?>
+        <div class="card col-md-4">
+            <div class="card-body">
+                <h5 class="card-title"><?php echo $row["name"]; ?></h5>
+                <h6 class="card-subtitle mb-2 text-muted">Fiyat: <?php echo $row["price"].' ₺'; ?></h6>
+                <p class="card-text">
+				<?php $out = strlen($row["description"]) > 50 ? substr($row["description"],0,80)."..." : $row["description"]; ?>
+				<?php echo $out; ?>
+				</p>
+                <a href="cartAction.php?action=addToCart&id=<?php echo $row["id"]; ?>" class="btn btn-primary">Sepete Ekle</a>
+            </div>
+        </div>
+        <?php } }else{ ?>
+        <p>Ürün bulunamadı...</p>
+        <?php } ?>
+    </div>
+</div>
 </body>
 </html>
