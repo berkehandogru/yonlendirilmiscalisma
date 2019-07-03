@@ -41,6 +41,7 @@ include("baglan.php");
 							<input class="form-control" type="text" name="soyad" placeholder="Soyad" required>
                             <input class="form-control" type="email" name="email" placeholder="E-mail Adresi" required>
                             <input class="form-control" type="password" name="password" placeholder="Sifre" required>
+							<input class="form-control" type="text" name="phone" placeholder="Telefon numarası" required>
                             <div class="form-button">
                                 <button id="submit" type="submit" class="ibtn">Register</button>
                             </div>
@@ -65,7 +66,8 @@ if($_POST){
 	$soyad = $_POST['soyad'];
 	$email = $_POST['email'];
 	$password = $_POST['password'];
-	$ekle = "INSERT INTO kullanicilar (ad, soyad, email, password) VALUES ('$ad', '$soyad', '$email','$password')";
+	$phone = $_POST['phone'];
+	$ekle = "INSERT INTO kullanicilar (ad, soyad, email, password,phone) VALUES ('$ad', '$soyad', '$email','$password','$phone')";
 	$sorgulama = mysqli_query($baglanti, $ekle);
 	if ($ekle != TRUE){
 		echo "Kaydınız sağlanamadı";
