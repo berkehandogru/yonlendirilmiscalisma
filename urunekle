@@ -75,11 +75,11 @@ echo "<!DOCTYPE html>
                 </div>
 				
 				                        <form action='' method='POST'>
-                            <input type='text' name='urunAdi' placeholder='Urun adini giriniz.'><br>					
+                            <input type='text' name='urunAdi' placeholder='Urun adini giriniz.'><br>		
+							<input type='text' name='urunAciklama' placeholder='Urun aciklama giriniz.'><br>								
                             <input type='text' name='ureticiAdi' placeholder='Uretici adini giriniz.'><br>
 							<input type='text' name='urunFiyat' placeholder='Urun fiyati'><br>
-                            <input type='number' name='stokSayisi' placeholder='Stok sayisi'><br>
-							<input type='text' name='kategori_adi' placeholder='Kategori adini giriniz.'><br>
+							<input type='text' name='category' placeholder='Kategori'><br> 
                             <div class='form-button'>
                                 <button id='submit' type='submit' name='ekle' class='ibtn'>Urun Ekle</button>
                             </div>
@@ -135,17 +135,21 @@ echo "<!DOCTYPE html>
 
 <?php
 if($_POST){
+	$nowDate = date("Y-m-d H:i:s");
+	
 	$urunAdi = $_POST['urunAdi'];
+	$urunAciklama = $_POST['urunAciklama'];
 	$ureticiAdi = $_POST['ureticiAdi'];
 	$urunFiyat = $_POST['urunFiyat'];
-	$stokSayisi = $_POST['stokSayisi'];
-	$kategori_adi = $_POST['kategori_adi'];
-	$ekle = "INSERT INTO urunler (urunAdi, ureticiAdi, urunFiyat, stokSayisi, kategori_adi) VALUES ('$urunAdi', '$ureticiAdi', '$urunFiyat','$stokSayisi', '$kategori_adi')";
+	$category = $_POST['category'];
+
+	$ekle = "INSERT INTO products (name, description, price, producer, category,created,modified) VALUES ('$urunAdi', '$urunAciklama', '$urunFiyat', '$ureticiAdi','$category', '$nowDate', '$nowDate')";
 	$sorgulama = mysqli_query($baglanti, $ekle);
 	if ($ekle != TRUE){
 		echo "Kaydınız sağlanamadı";
 	}
 	else{
+		echo "<script type='text/javascript'>alert('Ürün başarıyla eklendi.');</script>";
 		header("Location:adminindex.php");
 	}
 }
