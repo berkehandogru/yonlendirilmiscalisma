@@ -1,0 +1,122 @@
+<?php 
+// Alışveriş sepeti sınıfını başlat
+require_once 'cart.class.php'; 
+$cart = new Cart; 
+$kID = $_SESSION["kullanici_id"];
+// Veritabanı yapılandırma dosyasını dahil et 
+require_once 'dbConfig.php'; 
+ 
+// Varsayılan yönlendirme sayfası
+$redirectLoc = 'sepetim.php'; 
+ 
+// Gelen isteği kontrol etme ve içeriye alma
+if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){ 
+    if($_REQUEST['action'] == 'addToCart' && !empty($_REQUEST['id'])){ 
+        $productID = $_REQUEST['id']; 
+         
+        // Ürün detaylarını alıyoruz
+        $query = $db->query("SELECT * FROM products WHERE id = ".$productID); 
+        $row = $query->fetch_assoc(); 
+        $itemData = array( 
+            'id' => $row['id'], 
+            'name' => $row['name'], 
+            'price' => $row['price'], 
+            'qty' => 1 
+        ); 
+         
+        // Ürünü sepete ekliyoruz
+        $insertItem = $cart->insert($itemData); 
+         
+        // Sepete yönlendiriyoruz
+        $redirectLoc = $insertItem?'viewCart.php':'index.php'; 
+    }
+	elseif($_REQUEST['action'] == 'updateCartItem' && !empty($_REQUEST['id'])){ 
+        // Sepetindeki ürün verilerini güncelleliyoruz
+        $itemData = array( 
+            'rowid' => $_REQUEST['id'], 
+            'qty' => $_REQUEST['qty'] 
+        ); 
+        $updateItem = $cart->update($itemData); 
+         
+        // Durumu dönüyoruz
+        echo $updateItem?'ok':'err';die; 
+    }
+	elseif($_REQUEST['action'] == 'removeCartItem' && !empty($_REQUEST['id'])){ 
+        // Ürünü sepetten kaldırıyoruz 
+        $deleteItem = $cart->remove($_REQUEST['id']); 
+         
+		// Alışveriş sepetine yönlendiriyoruz
+        $redirectLoc = 'viewCart.php'; 
+    }
+	elseif($_REQUEST['action'] == 'placeOrder' && $cart->total_items() > 0){ 
+        $redirectLoc = 'checkout.php'; 
+         
+
+        $_SESSION['postData'] = $_POST; 
+     
+        $first_name = strip_tags($_POST['first_name']); 
+        $last_name = strip_tags($_POST['last_name']); 
+        $email = strip_tags($_POST['email']); 
+        $phone = strip_tags($_POST['phone']); 
+        $address = strip_tags($_POST['address']); 
+         
+        $errorMsg = ''; 
+		
+        if(empty($errorMsg)){ 
+
+            $insertCust = $db->query("INSERT INTO customers (parent_id,first_name, last_name, email, phone, address) VALUES ($kID,'".$first_name."', '".$last_name."', '".$email."', '".$phone."', '".$address."')"); 
+			
+            if($insertCust){ 
+                $custID = $db->insert_id; 
+                 
+				 $sum = $cart->total();				 
+				 echo "<script type='text/javascript'>alert($kID);</script>";
+                // Veritabanına sipariş bilgisi eklendi 
+                $insertOrder = $db->query("INSERT INTO orders (customer_id, grand_total, created, status) VALUES ($kID, '".$sum."', NOW(), 'Bekliyor')"); 
+             
+                if($insertOrder){ 
+                    $orderID = $db->insert_id; 
+                     
+                    // Sepetteki ürünleri aldım
+                    $cartItems = $cart->contents(); 
+                     
+                    // Sipariş de bulunan ürünler eklendi
+                    $sql = ''; 
+                    foreach($cartItems as $item){ 
+                        $sql .= "INSERT INTO order_items (order_id, product_id, quantity) VALUES ('".$orderID."', '".$item['id']."', '".$item['qty']."');"; 
+                    } 
+                     
+                    // Siparişin ürünleri basıldı
+                    $insertOrderItems = $db->multi_query($sql); 
+                     
+                    if($insertOrderItems){ 
+                        // Sepet Session'nında bulunan tüm ürünleri sildim
+                        $cart->destroy(); 
+                         
+                        // Başarılı bir şekilde sayfayı yönlendiriyorum. 
+                        $redirectLoc = 'orderSuccess.php?id='.$orderID; 
+                    }else{ 
+						echo "<script type='text/javascript'>alert('Siparişin ürünleri kayıt edilemedi.');</script>";
+						exit();
+                    } 
+                }else{ 
+					echo "<script type='text/javascript'>alert('Sipariş kayıt edilemedi.');</script>";
+					exit();
+                } 
+            }else{ 
+				echo "<script type='text/javascript'>alert('Sipariş oluşturulamadı.');</script>";
+				exit();
+            } 
+        }else{ 
+			echo "<script type='text/javascript'>alert('Genel Hata.');</script>";
+			exit();
+        } 
+        $_SESSION['sessData'] = $sessData; 
+    } 
+} 
+ 
+// Standart Yönlendirme sayfası
+header("Location: $redirectLoc"); 
+exit();
+
+?>
